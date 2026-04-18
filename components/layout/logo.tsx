@@ -24,8 +24,8 @@ export function Logo({ className, size = 'sm', asLink = true }: LogoProps) {
       width={w}
       height={h}
       priority={size !== 'sm'}
-      className={cn('h-auto w-auto select-none', className)}
-      style={{ maxHeight: h }}
+      className={cn('select-none', className)}
+      style={{ height: h, width: 'auto' }}
     />
   );
 

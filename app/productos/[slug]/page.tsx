@@ -107,6 +107,8 @@ export default async function ProductDetailPage({
             sku={product.sku}
             name={product.name}
             category={product.category.slug}
+            imageUrl={product.imageUrl}
+            galleryUrls={product.galleryUrls}
           />
         </div>
 

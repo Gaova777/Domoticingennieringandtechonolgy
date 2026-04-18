@@ -54,6 +54,9 @@
   --color-brand-magenta: #ec4899;
   --color-brand-yellow: #facc15;
   --color-brand-green: #22c55e;
+  --color-brand-orange: #f97316;
+  --color-brand-purple: #a855f7;
+  --color-brand-red: #ef4444;
   --color-brand-black: #0a0a0a;
   --color-surface-1: #0f0f10;
   --color-surface-2: #141416;
@@ -172,5 +175,33 @@
   }
   .text-pretty {
     text-wrap: pretty;
+  }
+
+  /* Brand multicolor gradient — nods to the logo ring. Use as 1–2px line. */
+  .brand-gradient-line {
+    background-image: linear-gradient(
+      90deg,
+      #22c55e 0%,
+      #facc15 18%,
+      #f97316 36%,
+      #ef4444 52%,
+      #ec4899 68%,
+      #a855f7 84%,
+      #06b6d4 100%
+    );
+  }
+  .brand-gradient-text {
+    background: linear-gradient(
+      90deg,
+      #22c55e,
+      #facc15,
+      #f97316,
+      #ec4899,
+      #a855f7,
+      #06b6d4
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
