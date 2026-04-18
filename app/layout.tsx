@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { SITE } from '@/lib/constants';
+import { Navbar } from '@/components/layout/navbar';
+import { Footer } from '@/components/layout/footer';
+import { WhatsappFloat } from '@/components/layout/whatsapp-float';
 import './globals.css';
 
 const geistSans = Geist({
@@ -56,8 +59,11 @@ export default function RootLayout({
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        {children}
-        <Toaster richColors position="top-right" />
+        <Navbar />
+        <main className="flex flex-1 flex-col">{children}</main>
+        <Footer />
+        <WhatsappFloat />
+        <Toaster richColors position="top-right" theme="dark" />
       </body>
     </html>
   );
