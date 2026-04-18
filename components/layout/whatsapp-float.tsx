@@ -16,26 +16,13 @@ function WhatsappIcon({ className }: { className?: string }) {
 export function WhatsappFloat() {
   return (
     <a
-      href={waLink('Hola 👋, me interesa un producto/servicio de Domotic E Ingeniería.')}
+      href={waLink('Hola, me interesa un producto/servicio de Domotic E Ingeniería.')}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"
-      className="group fixed bottom-5 right-5 z-50 md:bottom-7 md:right-7"
+      className="group fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-[0_2px_12px_rgba(0,0,0,0.5)] transition hover:bg-foreground hover:text-background"
     >
-      <span
-        aria-hidden
-        className="absolute inset-0 rounded-full bg-brand-green opacity-60 blur-md transition group-hover:opacity-80"
-      />
-      <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-brand-green text-background shadow-lg shadow-brand-green/30 ring-1 ring-white/20 transition group-hover:scale-105">
-        <WhatsappIcon className="h-6 w-6" />
-        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-green opacity-75" />
-          <span className="relative inline-flex h-3 w-3 rounded-full bg-brand-green ring-2 ring-background" />
-        </span>
-      </span>
-      <span className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-full border border-white/10 bg-background/90 px-3 py-1.5 text-xs font-medium text-foreground opacity-0 shadow-lg backdrop-blur-sm transition group-hover:opacity-100 md:block">
-        Hablemos por WhatsApp
-      </span>
+      <WhatsappIcon className="h-5 w-5" />
     </a>
   );
 }

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { MapPin, Clock, Phone, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CONTACT, SITE, waLink } from '@/lib/constants';
 
@@ -8,81 +7,84 @@ const MAP_EMBED =
 
 export function MapCta() {
   return (
-    <section className="relative">
-      <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-24">
-        <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]">
-          <div className="grid gap-0 md:grid-cols-[1fr_1.1fr]">
-            <div className="flex flex-col gap-6 p-8 md:p-12">
-              <span className="inline-flex items-center gap-2 rounded-full border border-brand-cyan/30 bg-brand-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand-cyan">
-                <MapPin className="h-3 w-3" />
-                Visitanos en Pereira
-              </span>
-              <h2 className="text-balance text-3xl font-bold leading-tight tracking-tight md:text-4xl">
-                Un equipo real, a 20 minutos de tu casa.
-              </h2>
-              <p className="text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-                Hacemos visitas técnicas sin costo dentro de {SITE.city} y el área
-                metropolitana. Agendá por WhatsApp o pasá por nuestra oficina.
-              </p>
+    <section>
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 md:grid-cols-12 md:gap-10 md:py-36">
+        <div className="md:col-span-6">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            Visitanos
+          </p>
+          <h2 className="mt-4 text-balance font-serif text-3xl leading-tight tracking-tight md:text-4xl lg:text-5xl">
+            Un equipo local,{' '}
+            <em className="italic">a 20 minutos.</em>
+          </h2>
+          <p className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+            Visitas técnicas sin costo en {SITE.city} y su área metropolitana.
+            Agendá por WhatsApp o pasá por la oficina.
+          </p>
 
-              <ul className="space-y-3 text-sm">
-                <li className="flex gap-3">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
-                  <span className="text-muted-foreground">{CONTACT.address}</span>
-                </li>
-                <li className="flex gap-3">
-                  <Clock className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
-                  <span className="text-muted-foreground">{CONTACT.hours}</span>
-                </li>
-                <li className="flex gap-3">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
-                  <a
-                    href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}
-                    className="text-foreground hover:underline"
-                  >
-                    {CONTACT.phone}
-                  </a>
-                </li>
-              </ul>
-
-              <div className="mt-2 flex flex-wrap gap-3">
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-12 bg-brand-green px-6 text-background shadow-lg shadow-brand-green/20 hover:bg-brand-green/90"
-                >
-                  <a
-                    href={waLink('Hola, quisiera agendar una visita técnica.')}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Agendar por WhatsApp
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="h-12 border-white/15 bg-white/5 px-6 hover:border-white/30 hover:bg-white/10"
-                >
-                  <Link href="/contacto">Todos los contactos</Link>
-                </Button>
-              </div>
+          <dl className="mt-10 grid gap-5 text-sm">
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                Dirección
+              </dt>
+              <dd className="mt-1 text-foreground">{CONTACT.address}</dd>
             </div>
-
-            <div className="relative min-h-[320px] border-t border-white/10 md:border-l md:border-t-0">
-              <iframe
-                title={`Mapa de ${SITE.name} en ${SITE.city}`}
-                src={MAP_EMBED}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="absolute inset-0 h-full w-full grayscale-[0.4] contrast-125"
-                style={{ border: 0, filter: 'invert(0.92) hue-rotate(180deg)' }}
-              />
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                Horario
+              </dt>
+              <dd className="mt-1 text-foreground">{CONTACT.hours}</dd>
             </div>
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                Teléfono
+              </dt>
+              <dd className="mt-1">
+                <a
+                  href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}
+                  className="text-foreground underline underline-offset-4 decoration-foreground/30 hover:decoration-foreground"
+                >
+                  {CONTACT.phone}
+                </a>
+              </dd>
+            </div>
+          </dl>
+
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Button
+              asChild
+              size="lg"
+              className="h-11 rounded-full bg-foreground px-6 text-sm font-medium text-background hover:bg-foreground/90"
+            >
+              <a
+                href={waLink('Hola, quisiera agendar una visita técnica.')}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Agendar por WhatsApp
+              </a>
+            </Button>
+            <Link
+              href="/contacto"
+              className="text-sm font-medium text-foreground underline underline-offset-4 decoration-foreground/30 transition hover:decoration-foreground"
+            >
+              Todos los contactos →
+            </Link>
           </div>
         </div>
+
+        <figure className="md:col-span-6">
+          <div className="relative aspect-square overflow-hidden rounded-sm border border-border md:aspect-[4/5]">
+            <iframe
+              title={`Mapa de ${SITE.name} en ${SITE.city}`}
+              src={MAP_EMBED}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0 h-full w-full"
+              style={{ border: 0, filter: 'invert(0.92) hue-rotate(180deg) saturate(0.4)' }}
+            />
+          </div>
+        </figure>
       </div>
     </section>
   );

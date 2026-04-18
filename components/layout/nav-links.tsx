@@ -18,8 +18,8 @@ export function NavLinks({
     <nav
       aria-label="Principal"
       className={cn(
-        'flex text-sm font-medium',
-        orientation === 'horizontal' ? 'items-center gap-1' : 'flex-col gap-1',
+        'flex text-sm',
+        orientation === 'horizontal' ? 'items-center gap-7' : 'flex-col gap-4',
       )}
     >
       {PRIMARY_NAV.map((item) => {
@@ -32,19 +32,13 @@ export function NavLinks({
             href={item.href}
             onClick={onNavigate}
             className={cn(
-              'relative rounded-md px-3 py-2 text-muted-foreground transition-colors hover:text-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan',
+              'text-muted-foreground transition-colors hover:text-foreground',
+              'focus-visible:outline-none focus-visible:underline underline-offset-4',
               active && 'text-foreground',
-              orientation === 'vertical' && 'text-base',
+              orientation === 'vertical' && 'text-lg font-serif tracking-tight',
             )}
           >
             {item.label}
-            {active ? (
-              <span
-                aria-hidden
-                className="absolute inset-x-3 -bottom-px h-px bg-gradient-to-r from-transparent via-brand-cyan to-transparent"
-              />
-            ) : null}
           </Link>
         );
       })}

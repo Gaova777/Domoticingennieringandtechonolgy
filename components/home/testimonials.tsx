@@ -1,55 +1,34 @@
-import { Star, Quote } from 'lucide-react';
 import { MOCK_TESTIMONIALS } from '@/lib/mock/testimonials';
-import { SectionHeading } from './section-heading';
 
 export function Testimonials() {
+  const t = MOCK_TESTIMONIALS[0];
+  if (!t) return null;
+
   return (
-    <section className="relative">
-      <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-24">
-        <SectionHeading
-          eyebrow="Clientes"
-          title="Lo que dicen quienes ya confiaron"
-          description="Proyectos reales en Risaralda. No son frases de stock."
-        />
-        <ul className="mt-12 grid gap-4 md:grid-cols-3">
-          {MOCK_TESTIMONIALS.map((t) => (
-            <li
-              key={t.id}
-              className="relative flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6"
-            >
-              <Quote
-                aria-hidden
-                className="h-6 w-6 text-brand-cyan/60"
-              />
-              <p className="text-pretty text-sm leading-relaxed text-foreground">
-                {t.message}
+    <section className="border-b border-border">
+      <div className="mx-auto max-w-5xl px-6 py-28 text-left md:py-36">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          Testimonios
+        </p>
+        <blockquote className="mt-8">
+          <p className="text-balance font-serif text-3xl leading-[1.15] tracking-tight md:text-5xl lg:text-6xl">
+            <span className="text-foreground/40">“</span>
+            {t.message}
+            <span className="text-foreground/40">”</span>
+          </p>
+          <footer className="mt-10 flex items-center gap-4 border-t border-border pt-6">
+            <div className="h-10 w-10 rounded-full bg-white/10" />
+            <div>
+              <p className="text-sm font-medium">{t.name}</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                {t.role} · {t.city}
               </p>
-              <div className="flex items-center gap-1 text-brand-yellow">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-current" />
-                ))}
-              </div>
-              <div className="mt-auto flex items-center gap-3 border-t border-white/10 pt-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-cyan/40 via-brand-magenta/30 to-brand-yellow/40 text-sm font-bold text-background">
-                  {t.name
-                    .split(' ')
-                    .map((p) => p[0])
-                    .slice(0, 2)
-                    .join('')}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {t.role} · {t.city}
-                  </p>
-                </div>
-                <span className="ml-auto rounded-full border border-brand-cyan/30 bg-brand-cyan/10 px-2 py-0.5 text-[10px] font-medium text-brand-cyan">
-                  {t.service}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
+            </div>
+            <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              {t.service}
+            </span>
+          </footer>
+        </blockquote>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import {
   Sheet,
@@ -12,8 +13,7 @@ import {
 import { NavLinks } from './nav-links';
 import { Logo } from './logo';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { CONTACT, waLink } from '@/lib/constants';
+import { CONTACT } from '@/lib/constants';
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -28,40 +28,39 @@ export function MobileNav() {
           aria-label="Abrir menú"
           className="md:hidden"
         >
-          <Menu className="h-5 w-5" />
+          <Menu strokeWidth={1.5} className="h-5 w-5" />
         </Button>
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-[85%] max-w-sm border-l border-white/10 bg-background/95 backdrop-blur-xl"
+        className="w-[88%] max-w-sm border-l border-border bg-background"
       >
-        <SheetHeader className="border-b border-white/10 pb-4">
+        <SheetHeader className="border-b border-border pb-6">
           <SheetTitle asChild>
             <Logo asLink={false} />
           </SheetTitle>
         </SheetHeader>
-        <div className="flex flex-col gap-6 pt-6">
+        <div className="flex flex-col gap-10 pt-8">
           <NavLinks orientation="vertical" onNavigate={close} />
-          <Separator className="bg-white/10" />
-          <div className="flex flex-col gap-2">
+          <div className="border-t border-border pt-6">
             <Button
               asChild
-              className="w-full bg-brand-cyan text-background hover:bg-brand-cyan/90"
+              className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
               onClick={close}
             >
+              <Link href="/cotizar">Cotizar proyecto</Link>
+            </Button>
+            <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              Contacto
+            </p>
+            <p className="mt-2 text-sm">
               <a
-                href={waLink('Hola, quiero cotizar un servicio de Domotic E Ingeniería.')}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}
+                className="text-foreground hover:underline underline-offset-4"
               >
-                Cotizar por WhatsApp
+                {CONTACT.phone}
               </a>
-            </Button>
-            <Button asChild variant="outline" className="w-full" onClick={close}>
-              <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}>
-                Llamar {CONTACT.phone}
-              </a>
-            </Button>
+            </p>
           </div>
         </div>
       </SheetContent>

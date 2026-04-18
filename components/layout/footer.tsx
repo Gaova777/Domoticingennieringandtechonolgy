@@ -1,9 +1,7 @@
 import Link from 'next/link';
-import { Mail, MapPin, Phone, Clock } from 'lucide-react';
 import { Logo } from './logo';
-import { Separator } from '@/components/ui/separator';
 import { FOOTER_SERVICES, FOOTER_LEGAL } from '@/lib/nav';
-import { CONTACT, SITE, waLink } from '@/lib/constants';
+import { CONTACT, SITE } from '@/lib/constants';
 
 type IconProps = { className?: string };
 
@@ -14,7 +12,7 @@ function InstagramIcon({ className }: IconProps) {
       className={className}
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -52,29 +50,28 @@ function TiktokIcon({ className }: IconProps) {
   );
 }
 
+const COLUMN_LABEL =
+  'font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground';
+
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-24 border-t border-white/10 bg-background">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-cyan/60 to-transparent"
-      />
-      <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
+    <footer className="border-t border-border">
+      <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-4">
+          <div className="md:col-span-5">
             <Logo />
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
               {SITE.description}
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-8 flex gap-5 text-muted-foreground">
               <a
                 href={CONTACT.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition hover:border-brand-magenta hover:text-brand-magenta"
+                className="transition hover:text-foreground"
               >
                 <InstagramIcon className="h-4 w-4" />
               </a>
@@ -83,7 +80,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition hover:border-brand-cyan hover:text-brand-cyan"
+                className="transition hover:text-foreground"
               >
                 <FacebookIcon className="h-4 w-4" />
               </a>
@@ -92,7 +89,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition hover:border-brand-yellow hover:text-brand-yellow"
+                className="transition hover:text-foreground"
               >
                 <TiktokIcon className="h-4 w-4" />
               </a>
@@ -100,15 +97,13 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-foreground">
-              Servicios
-            </h3>
-            <ul className="mt-4 space-y-2 text-sm">
+            <h3 className={COLUMN_LABEL}>Servicios</h3>
+            <ul className="mt-5 space-y-3 text-sm">
               {FOOTER_SERVICES.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-muted-foreground transition hover:text-brand-cyan"
+                    className="text-muted-foreground transition hover:text-foreground"
                   >
                     {item.label}
                   </Link>
@@ -118,15 +113,13 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-2">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-foreground">
-              Legal
-            </h3>
-            <ul className="mt-4 space-y-2 text-sm">
+            <h3 className={COLUMN_LABEL}>Legal</h3>
+            <ul className="mt-5 space-y-3 text-sm">
               {FOOTER_LEGAL.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-muted-foreground transition hover:text-brand-cyan"
+                    className="text-muted-foreground transition hover:text-foreground"
                   >
                     {item.label}
                   </Link>
@@ -135,59 +128,36 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="md:col-span-3">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-foreground">
-              Contacto
-            </h3>
-            <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li className="flex gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
-                <span>{CONTACT.address}</span>
-              </li>
-              <li className="flex gap-2">
-                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
+          <div className="md:col-span-2">
+            <h3 className={COLUMN_LABEL}>Contacto</h3>
+            <ul className="mt-5 space-y-3 text-sm">
+              <li className="text-muted-foreground">{CONTACT.address}</li>
+              <li>
                 <a
                   href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}
-                  className="hover:text-foreground"
+                  className="text-foreground hover:underline underline-offset-4"
                 >
                   {CONTACT.phone}
                 </a>
               </li>
-              <li className="flex gap-2">
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
+              <li>
                 <a
                   href={`mailto:${CONTACT.email}`}
-                  className="hover:text-foreground"
+                  className="text-foreground hover:underline underline-offset-4"
                 >
                   {CONTACT.email}
                 </a>
               </li>
-              <li className="flex gap-2">
-                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" />
-                <span>{CONTACT.hours}</span>
-              </li>
             </ul>
-            <a
-              href={waLink('Hola, vengo del sitio web.')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3 py-1.5 text-xs font-medium text-brand-green transition hover:border-brand-green"
-            >
-              WhatsApp directo
-            </a>
           </div>
         </div>
 
-        <Separator className="my-10 bg-white/10" />
-
-        <div className="flex flex-col gap-4 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>
-            © {year} {SITE.name} · NIT {CONTACT.nit} · {SITE.city}, {SITE.region} ·
-            Colombia
+        <div className="mt-16 flex flex-col gap-3 border-t border-border pt-8 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
+          <p className="font-mono uppercase tracking-[0.18em]">
+            © {year} · {SITE.name} · NIT {CONTACT.nit}
           </p>
-          <p className="flex items-center gap-2">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-brand-cyan" />
-            Tecnología a tu alcance
+          <p className="font-mono uppercase tracking-[0.18em]">
+            {SITE.city}, {SITE.region} — Colombia
           </p>
         </div>
       </div>

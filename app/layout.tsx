@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { SITE } from '@/lib/constants';
 import { Navbar } from '@/components/layout/navbar';
@@ -7,14 +7,24 @@ import { Footer } from '@/components/layout/footer';
 import { WhatsappFloat } from '@/components/layout/whatsapp-float';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const sans = Inter({
+  variable: '--font-sans',
   subsets: ['latin'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const serif = Instrument_Serif({
+  variable: '--font-serif',
   subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
+
+const mono = JetBrains_Mono({
+  variable: '--font-mono',
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -56,9 +66,9 @@ export default function RootLayout({
   return (
     <html
       lang="es-CO"
-      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`dark ${sans.variable} ${serif.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         <Navbar />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />

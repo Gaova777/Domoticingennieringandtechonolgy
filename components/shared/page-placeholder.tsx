@@ -19,33 +19,31 @@ export function PagePlaceholder({
   return (
     <section
       className={cn(
-        'relative mx-auto flex min-h-[60vh] w-full max-w-5xl flex-col items-start justify-center gap-6 px-4 py-20 md:px-6',
+        'mx-auto flex min-h-[60vh] w-full max-w-4xl flex-col items-start justify-center gap-8 px-6 py-28 md:py-36',
         className,
       )}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-cyan/40 to-transparent"
-      />
       {eyebrow ? (
-        <span className="text-xs font-semibold uppercase tracking-widest text-brand-cyan">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           {eyebrow}
-        </span>
+        </p>
       ) : null}
-      <h1 className="text-4xl font-bold tracking-tight md:text-5xl">{title}</h1>
+      <h1 className="text-balance font-serif text-4xl leading-[1.05] tracking-tight md:text-6xl">
+        {title}
+      </h1>
       {description ? (
-        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+        <p className="max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
           {description}
         </p>
       ) : null}
       {phase ? (
-        <p className="rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-muted-foreground">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           En construcción · {phase}
         </p>
       ) : null}
       <Link
         href="/"
-        className="text-sm font-medium text-brand-cyan transition hover:underline"
+        className="text-sm font-medium text-foreground underline underline-offset-4 decoration-foreground/30 hover:decoration-foreground"
       >
         ← Volver al inicio
       </Link>

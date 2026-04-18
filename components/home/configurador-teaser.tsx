@@ -1,92 +1,66 @@
 import Link from 'next/link';
-import { ArrowRight, Wand2, Home, ShieldCheck, KeyRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const STEPS = [
-  { icon: Home, label: '¿Qué espacio?', hint: 'Casa, local, edificio' },
-  { icon: ShieldCheck, label: '¿Qué objetivo?', hint: 'Seguridad, confort, ahorro' },
-  { icon: KeyRound, label: 'Te armamos el kit', hint: 'Productos + instalación' },
-];
 
 export function ConfiguradorTeaser() {
   return (
-    <section className="relative">
-      <div className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-20">
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] via-black to-black p-8 md:p-12">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 dot-grid opacity-60"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-brand-magenta/20 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-brand-cyan/20 blur-3xl"
-          />
+    <section className="border-b border-border">
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 md:grid-cols-12 md:gap-10 md:py-36">
+        <div className="md:col-span-6">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            Configurador
+          </p>
+          <h2 className="mt-4 text-balance font-serif text-3xl leading-tight tracking-tight md:text-4xl lg:text-5xl">
+            Tu proyecto diseñado{' '}
+            <em className="italic">a la medida.</em>
+          </h2>
+          <p className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+            Respondé tres preguntas sobre tu espacio y te entregamos una propuesta
+            con equipos, instalación y presupuesto. Sin compromiso.
+          </p>
 
-          <div className="relative grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center">
-            <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-brand-magenta/30 bg-brand-magenta/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand-magenta">
-                <Wand2 className="h-3 w-3" />
-                Configurador inteligente
-              </span>
-              <h2 className="mt-5 text-balance text-3xl font-bold leading-tight tracking-tight md:text-4xl">
-                Armá tu proyecto en{' '}
-                <span className="text-gradient-brand">3 minutos</span>
-              </h2>
-              <p className="mt-4 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-                Respondé unas preguntas y te proponemos el kit de productos e
-                instalación ideal — con presupuesto estimado y tiempos. Sin
-                compromiso.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-12 bg-brand-magenta px-6 text-background shadow-lg shadow-brand-magenta/20 hover:bg-brand-magenta/90"
-                >
-                  <Link href="/configurador">
-                    Empezar configurador
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="h-12 border-white/15 bg-white/5 px-6 hover:border-white/30 hover:bg-white/10"
-                >
-                  <Link href="/cotizar">Prefiero hablar con alguien</Link>
-                </Button>
-              </div>
-            </div>
-
-            <ol className="relative grid gap-3">
-              {STEPS.map((step, i) => {
-                const Icon = step.icon;
-                return (
-                  <li
-                    key={step.label}
-                    className="flex items-center gap-4 rounded-2xl border border-white/10 bg-background/60 p-4 backdrop-blur-sm"
-                  >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-brand-cyan/30 bg-brand-cyan/10 text-brand-cyan">
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold">{step.label}</p>
-                      <p className="text-xs text-muted-foreground">{step.hint}</p>
-                    </div>
-                    <span className="text-xs font-mono tabular-nums text-muted-foreground">
-                      0{i + 1}
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Button
+              asChild
+              size="lg"
+              className="h-11 rounded-full bg-foreground px-6 text-sm font-medium text-background hover:bg-foreground/90"
+            >
+              <Link href="/configurador">Iniciar configurador</Link>
+            </Button>
+            <Link
+              href="/cotizar"
+              className="text-sm font-medium text-foreground underline underline-offset-4 decoration-foreground/30 transition hover:decoration-foreground"
+            >
+              Prefiero hablar con alguien →
+            </Link>
           </div>
         </div>
+
+        <ol className="md:col-span-6 md:mt-12">
+          {[
+            { n: '01', label: 'Tipo de espacio', hint: 'Casa, local u oficina.' },
+            {
+              n: '02',
+              label: 'Objetivo principal',
+              hint: 'Seguridad, confort o ahorro.',
+            },
+            { n: '03', label: 'Tu propuesta', hint: 'Equipos, mano de obra y tiempos.' },
+          ].map((s) => (
+            <li
+              key={s.n}
+              className="grid grid-cols-[auto_1fr] items-baseline gap-6 border-t border-border py-8 last:border-b"
+            >
+              <span className="font-mono text-sm tabular-nums text-muted-foreground">
+                {s.n}
+              </span>
+              <div>
+                <h3 className="font-serif text-xl tracking-tight md:text-2xl">
+                  {s.label}
+                </h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{s.hint}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
