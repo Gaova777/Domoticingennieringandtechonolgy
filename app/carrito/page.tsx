@@ -1,18 +1,16 @@
 import type { Metadata } from 'next';
-import { PagePlaceholder } from '@/components/shared/page-placeholder';
+import { CartPageClient } from '@/components/cart/cart-page-client';
 
 export const metadata: Metadata = {
   title: 'Carrito',
-  description: 'Revisá tu carrito antes de proceder al pago.',
+  description:
+    'Revisa los productos en tu carrito antes de ir al pago. Envíos a toda Colombia.',
 };
 
 export default function CartPage() {
   return (
-    <PagePlaceholder
-      eyebrow="Carrito"
-      title="Tu carrito"
-      description="Acá vas a ver los productos que vayas agregando. Podés seguir comprando o proceder al pago."
-      phase="Fase 5 — UI del carrito en camino"
-    />
+    <div className="border-t border-border">
+      <CartPageClient />
+    </div>
   );
 }

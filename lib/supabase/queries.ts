@@ -21,6 +21,7 @@ export type DBProduct = {
   imageUrl: string | null;
   galleryUrls: string[];
   isFeatured: boolean;
+  isStar: boolean;
   createdAt: string;
   brand: { slug: string; name: string };
   category: { slug: string; name: string; description: string | null };
@@ -46,6 +47,7 @@ type RawJoined = {
   image_url: string | null;
   gallery_urls: string[] | null;
   is_featured: boolean;
+  is_star: boolean;
   created_at: string;
   category: { slug: string; name: string; description: string | null } | null;
   brand: { slug: string; name: string } | null;
@@ -54,7 +56,7 @@ type RawJoined = {
 const PRODUCT_SELECT = `
   id, slug, sku, name, description, price, compare_at_price, rating, reviews, stock,
   badges, short_spec, protocol, warranty_months, specs, includes,
-  image_url, gallery_urls, is_featured, created_at,
+  image_url, gallery_urls, is_featured, is_star, created_at,
   category:categories!inner(slug, name, description),
   brand:brands!inner(slug, name)
 `;
@@ -82,6 +84,7 @@ function mapProduct(row: RawJoined): DBProduct {
     imageUrl: row.image_url,
     galleryUrls: row.gallery_urls ?? [],
     isFeatured: row.is_featured,
+    isStar: row.is_star,
     createdAt: row.created_at,
     brand: row.brand ?? { slug: '', name: '' },
     category: row.category ?? { slug: '', name: '', description: null },
@@ -339,4 +342,67 @@ export async function getTestimonials(limit = 3): Promise<DBTestimonial[]> {
     .limit(limit);
   if (error) return [];
   return data ?? [];
+}
+
+// ---------------------------------------------------------------------------
+// Promotions
+// ---------------------------------------------------------------------------
+
+export type PromoValidation =
+  | {
+      valid: true;
+      code: string;
+      description: string | null;
+      type: 'percent' | 'fixed_cop';
+      value: number;
+      discount: number;
+      promoId: string;
+    }
+  | { valid: false; reason: string };
+
+export async function validatePromoCode(
+  rawCode: string,
+  subtotalCop: number,
+): Promise<PromoValidation> {
+  const code = rawCode.trim().toUpperCase();
+  if (!code) return { valid: false, reason: 'Ingresa un código' };
+
+  const sb = supabasePublic();
+  const { data: promo, error } = await sb
+    .from('promotions')
+    .select('id, code, description, type, value, min_purchase, max_uses, used_count')
+    .ilike('code', code)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[validatePromoCode]', error);
+    return { valid: false, reason: 'No pudimos verificar el código' };
+  }
+  if (!promo) return { valid: false, reason: 'Código inválido o expirado' };
+
+  if (subtotalCop < promo.min_purchase) {
+    return {
+      valid: false,
+      reason: `Requiere compra mínima de ${new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        maximumFractionDigits: 0,
+      }).format(promo.min_purchase)}`,
+    };
+  }
+
+  const discount =
+    promo.type === 'percent'
+      ? Math.round((subtotalCop * promo.value) / 100)
+      : Math.min(promo.value, subtotalCop);
+
+  return {
+    valid: true,
+    code: promo.code,
+    description: promo.description,
+    type: promo.type as 'percent' | 'fixed_cop',
+    value: promo.value,
+    discount,
+    promoId: promo.id,
+  };
 }

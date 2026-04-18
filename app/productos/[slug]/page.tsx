@@ -111,8 +111,15 @@ export default async function ProductDetailPage({
         </div>
 
         <div className="md:col-span-5">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            {product.brand.name} · {product.category.name}
+          <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            {product.isStar ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-background">
+                <span aria-hidden>★</span> Destacado
+              </span>
+            ) : null}
+            <span>
+              {product.brand.name} · {product.category.name}
+            </span>
           </p>
           <h1 className="mt-4 font-serif text-3xl leading-[1.08] tracking-tight md:text-5xl">
             {product.name}

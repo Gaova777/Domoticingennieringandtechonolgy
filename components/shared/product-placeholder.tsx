@@ -51,7 +51,8 @@ export function ProductPlaceholder({
   className,
   size = 'md',
 }: Props) {
-  const Icon = (category && ICON_MAP[category]) ?? Package;
+  const Icon: LucideIcon =
+    (category ? ICON_MAP[category] : undefined) ?? Package;
 
   return (
     <div

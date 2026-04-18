@@ -35,6 +35,11 @@ export function ProductCard({ product, index }: Props) {
           size="md"
           className="aspect-[4/5]"
         />
+        {product.isStar ? (
+          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-background">
+            <span aria-hidden>★</span> Destacado
+          </span>
+        ) : null}
         {discount > 0 ? (
           <span className="absolute right-3 top-3 rounded-full border border-border bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground">
             -{discount}%
