@@ -1,11 +1,45 @@
 import Link from 'next/link';
-import { Instagram, Facebook, Mail, MapPin, Phone, Clock } from 'lucide-react';
+import { Mail, MapPin, Phone, Clock } from 'lucide-react';
 import { Logo } from './logo';
 import { Separator } from '@/components/ui/separator';
 import { FOOTER_SERVICES, FOOTER_LEGAL } from '@/lib/nav';
 import { CONTACT, SITE, waLink } from '@/lib/constants';
 
-function TiktokIcon({ className }: { className?: string }) {
+type IconProps = { className?: string };
+
+function InstagramIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
+function FacebookIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z" />
+    </svg>
+  );
+}
+
+function TiktokIcon({ className }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -42,7 +76,7 @@ export function Footer() {
                 aria-label="Instagram"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition hover:border-brand-magenta hover:text-brand-magenta"
               >
-                <Instagram className="h-4 w-4" />
+                <InstagramIcon className="h-4 w-4" />
               </a>
               <a
                 href={CONTACT.social.facebook}
@@ -51,7 +85,7 @@ export function Footer() {
                 aria-label="Facebook"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition hover:border-brand-cyan hover:text-brand-cyan"
               >
-                <Facebook className="h-4 w-4" />
+                <FacebookIcon className="h-4 w-4" />
               </a>
               <a
                 href={CONTACT.social.tiktok}
