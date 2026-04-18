@@ -10,7 +10,7 @@ export async function Hero() {
   const star = featured[0];
 
   return (
-    <section className="relative border-b border-border">
+    <section id="inicio" className="relative border-b border-border">
       <div
         aria-hidden
         className="brand-gradient-line pointer-events-none absolute inset-x-0 top-0 h-px opacity-50"

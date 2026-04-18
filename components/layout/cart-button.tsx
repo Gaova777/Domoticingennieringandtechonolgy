@@ -14,7 +14,7 @@ export function CartButton({ className }: { className?: string }) {
       href="/carrito"
       aria-label={`Carrito (${count} items)`}
       className={cn(
-        'relative inline-flex h-9 items-center gap-2 rounded-full px-3 text-xs font-medium text-foreground transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30',
+        'relative inline-flex h-9 items-center gap-2 rounded-full px-3 text-xs font-medium text-foreground transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30',
         className,
       )}
     >

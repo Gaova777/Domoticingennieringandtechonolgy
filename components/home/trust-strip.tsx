@@ -4,7 +4,7 @@ export function TrustStrip() {
   return (
     <section
       aria-label="Marcas con las que trabajamos"
-      className="border-y border-white/10 bg-white/[0.02]"
+      className="border-y border-border bg-foreground/[0.02]"
     >
       <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
         <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">

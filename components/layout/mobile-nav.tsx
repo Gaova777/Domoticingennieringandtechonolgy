@@ -13,6 +13,7 @@ import {
 import { NavLinks } from './nav-links';
 import { Logo } from './logo';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { CONTACT } from '@/lib/constants';
 
 export function MobileNav() {
@@ -59,6 +60,12 @@ export function MobileNav() {
             >
               Iniciar sesión
             </Link>
+            <div className="flex items-center justify-between pt-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                Tema
+              </p>
+              <ThemeToggle />
+            </div>
             <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
               Contacto
             </p>

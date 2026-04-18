@@ -7,7 +7,7 @@ const MAP_EMBED =
 
 export function MapCta() {
   return (
-    <section>
+    <section id="visitanos">
       <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 md:grid-cols-12 md:gap-10 md:py-36">
         <div className="md:col-span-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">

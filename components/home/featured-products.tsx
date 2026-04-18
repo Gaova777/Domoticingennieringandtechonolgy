@@ -8,7 +8,7 @@ export function FeaturedProducts() {
   const products = MOCK_FEATURED_PRODUCTS.slice(0, 3);
 
   return (
-    <section className="border-b border-border">
+    <section id="destacados" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-6 py-28 md:py-36">
         <SectionHeading
           eyebrow="Selección curada"

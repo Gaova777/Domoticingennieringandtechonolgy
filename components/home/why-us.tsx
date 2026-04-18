@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export function WhyUs() {
   return (
-    <section className="relative border-y border-white/10 bg-white/[0.02]">
+    <section className="relative border-y border-border bg-foreground/[0.02]">
       <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-24">
         <SectionHeading
           eyebrow="¿Por qué nosotros?"
@@ -19,7 +19,7 @@ export function WhyUs() {
             return (
               <li
                 key={f.id}
-                className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-background/40 p-6 backdrop-blur-sm"
+                className="flex flex-col gap-4 rounded-2xl border border-border bg-background/40 p-6 backdrop-blur-sm"
               >
                 <div
                   className={cn(

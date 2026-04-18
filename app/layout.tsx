@@ -5,6 +5,7 @@ import { SITE } from '@/lib/constants';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { WhatsappFloat } from '@/components/layout/whatsapp-float';
+import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 const sans = Inter({
@@ -66,14 +67,17 @@ export default function RootLayout({
   return (
     <html
       lang="es-CO"
-      className={`dark ${sans.variable} ${serif.variable} ${mono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${sans.variable} ${serif.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
-        <Navbar />
-        <main className="flex flex-1 flex-col">{children}</main>
-        <Footer />
-        <WhatsappFloat />
-        <Toaster richColors position="top-right" theme="dark" />
+        <ThemeProvider>
+          <Navbar />
+          <main className="flex flex-1 flex-col">{children}</main>
+          <Footer />
+          <WhatsappFloat />
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );

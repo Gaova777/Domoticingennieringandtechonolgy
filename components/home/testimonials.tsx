@@ -5,7 +5,7 @@ export function Testimonials() {
   if (!t) return null;
 
   return (
-    <section className="border-b border-border">
+    <section id="testimonios" className="border-b border-border">
       <div className="mx-auto max-w-5xl px-6 py-28 text-left md:py-36">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           Testimonios
@@ -17,7 +17,7 @@ export function Testimonials() {
             <span className="text-foreground/40">”</span>
           </p>
           <footer className="mt-10 flex items-center gap-4 border-t border-border pt-6">
-            <div className="h-10 w-10 rounded-full bg-white/10" />
+            <div className="h-10 w-10 rounded-full bg-muted" />
             <div>
               <p className="text-sm font-medium">{t.name}</p>
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">

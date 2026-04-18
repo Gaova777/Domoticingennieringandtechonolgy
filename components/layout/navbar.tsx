@@ -5,6 +5,7 @@ import { NavLinks } from './nav-links';
 import { CartButton } from './cart-button';
 import { MobileNav } from './mobile-nav';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { getCurrentUser } from '@/lib/supabase/queries-auth';
 
 export async function Navbar() {
@@ -19,14 +20,15 @@ export async function Navbar() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
       <div
         aria-hidden
-        className="brand-gradient-line pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-50"
+        className="brand-gradient-line pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-60"
       />
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6">
         <Logo />
         <div className="ml-auto hidden md:block">
           <NavLinks />
         </div>
-        <div className="ml-auto flex items-center gap-3 md:ml-6">
+        <div className="ml-auto flex items-center gap-2 md:ml-4">
+          <ThemeToggle className="hidden md:inline-flex" />
           {user ? (
             <Link
               href="/cuenta"

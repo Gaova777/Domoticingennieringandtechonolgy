@@ -47,14 +47,14 @@ export function CameraComparator() {
           <Button
             variant="outline"
             render={<Link href="/productos?comparar=camaras" />}
-            className="border-white/15 bg-white/5 hover:border-brand-magenta/40 hover:text-brand-magenta"
+            className="border-border bg-foreground/[0.03] hover:border-brand-magenta/40 hover:text-brand-magenta"
           >
             Comparador completo
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
 
-        <div className="mt-10 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03]">
+        <div className="mt-10 overflow-x-auto rounded-2xl border border-border bg-foreground/[0.03]">
           <table className="w-full min-w-[560px] border-collapse text-sm">
             <thead>
               <tr>

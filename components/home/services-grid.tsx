@@ -6,7 +6,7 @@ export function ServicesGrid() {
   const services = MOCK_SERVICES.slice(0, 4);
 
   return (
-    <section className="border-b border-border">
+    <section id="servicios" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-6 py-28 md:py-36">
         <SectionHeading
           eyebrow="Servicios"

@@ -51,7 +51,7 @@ export function PromoInput({ subtotal }: Props) {
         <button
           type="button"
           onClick={clearPromo}
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition hover:bg-white/5 hover:text-foreground"
+          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition hover:bg-foreground/5 hover:text-foreground"
           aria-label="Quitar cupón"
         >
           <X className="h-3.5 w-3.5" />
