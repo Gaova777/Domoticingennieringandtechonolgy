@@ -3,7 +3,9 @@ export const SITE = {
   tagline: 'Tecnología a tu alcance',
   description:
     'Instalación e e-commerce de domótica, cámaras de seguridad, cerraduras inteligentes y puertas automáticas en Pereira, Risaralda. Asesoría profesional y marcas reconocidas.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://domotic-placeholder.vercel.app',
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    'https://domoticingennieringandtechonolgy.vercel.app',
   locale: 'es-CO',
   currency: 'COP',
   city: 'Pereira',
