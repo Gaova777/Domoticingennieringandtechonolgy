@@ -1,8 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { SITE } from '@/lib/constants';
-import { CATALOG } from '@/lib/mock/catalog';
+import { getAllProductSlugs } from '@/lib/supabase/queries';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE.url;
   const now = new Date();
 
@@ -27,9 +29,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === '' ? 1 : 0.7,
   }));
 
-  const productEntries: MetadataRoute.Sitemap = CATALOG.map((p) => ({
-    url: `${base}/productos/${p.slug}`,
-    lastModified: new Date(p.createdAt),
+  const slugs = await getAllProductSlugs();
+  const productEntries: MetadataRoute.Sitemap = slugs.map((slug) => ({
+    url: `${base}/productos/${slug}`,
+    lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));

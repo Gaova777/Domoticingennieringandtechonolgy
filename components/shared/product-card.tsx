@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { formatCop } from '@/lib/constants';
 import { ProductPlaceholder } from './product-placeholder';
-import { BRAND_META, CATEGORY_META, type Product } from '@/lib/mock/catalog';
+import type { DBProduct } from '@/lib/supabase/queries';
 
 type Props = {
-  product: Product;
+  product: DBProduct;
   index?: number;
 };
 
@@ -43,14 +43,16 @@ export function ProductCard({ product, index }: Props) {
 
       <div className="mt-5">
         <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          {BRAND_META[product.brand].label} · {CATEGORY_META[product.category].label}
+          {product.brand.name} · {product.category.name}
         </p>
         <h3 className="mt-1.5 text-base font-medium leading-snug tracking-tight">
           {product.name}
         </h3>
-        <p className="mt-1 font-mono text-[11px] text-muted-foreground">
-          {product.shortSpec}
-        </p>
+        {product.shortSpec ? (
+          <p className="mt-1 font-mono text-[11px] text-muted-foreground">
+            {product.shortSpec}
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-4 flex items-baseline justify-between border-t border-border pt-3">

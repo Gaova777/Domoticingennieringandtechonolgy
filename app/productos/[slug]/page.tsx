@@ -3,12 +3,10 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ShieldCheck, Truck, Timer } from 'lucide-react';
 import {
-  CATALOG,
-  findProductBySlug,
-  relatedProducts,
-  BRAND_META,
-  CATEGORY_META,
-} from '@/lib/mock/catalog';
+  getProductBySlug,
+  getRelatedProducts,
+  getAllProductSlugs,
+} from '@/lib/supabase/queries';
 import { formatCop, SITE } from '@/lib/constants';
 import { ProductGallery } from '@/components/catalog/product-gallery';
 import { AddToCart } from '@/components/catalog/add-to-cart';
@@ -16,8 +14,11 @@ import { ProductCard } from '@/components/shared/product-card';
 
 type Params = { slug: string };
 
+export const revalidate = 300;
+
 export async function generateStaticParams(): Promise<Params[]> {
-  return CATALOG.map((p) => ({ slug: p.slug }));
+  const slugs = await getAllProductSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = findProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return { title: 'Producto no encontrado' };
   return {
     title: product.name,
@@ -40,19 +41,17 @@ export default async function ProductDetailPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const product = findProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = relatedProducts(product, 3);
-  const category = CATEGORY_META[product.category];
-  const brand = BRAND_META[product.brand];
+  const related = await getRelatedProducts(product.category.slug, product.slug, 3);
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     sku: product.sku,
-    brand: { '@type': 'Brand', name: brand.label },
+    brand: { '@type': 'Brand', name: product.brand.name },
     description: product.description,
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -91,10 +90,10 @@ export default async function ProductDetailPage({
           <li aria-hidden>·</li>
           <li>
             <Link
-              href={`/productos?cat=${product.category}`}
+              href={`/productos?cat=${product.category.slug}`}
               className="hover:text-foreground"
             >
-              {category.label}
+              {product.category.name}
             </Link>
           </li>
           <li aria-hidden>·</li>
@@ -109,7 +108,7 @@ export default async function ProductDetailPage({
 
         <div className="md:col-span-5">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            {brand.label} · {category.label}
+            {product.brand.name} · {product.category.name}
           </p>
           <h1 className="mt-4 font-serif text-3xl leading-[1.08] tracking-tight md:text-5xl">
             {product.name}
@@ -150,7 +149,11 @@ export default async function ProductDetailPage({
           </div>
 
           <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-border pt-8 text-left">
-            <Micro icon={ShieldCheck} label="Garantía" value={`${product.warrantyMonths} meses`} />
+            <Micro
+              icon={ShieldCheck}
+              label="Garantía"
+              value={`${product.warrantyMonths} meses`}
+            />
             <Micro icon={Truck} label="Envío" value="Toda Colombia" />
             <Micro icon={Timer} label="Despacho" value="24 – 48 h" />
           </dl>
@@ -179,7 +182,7 @@ export default async function ProductDetailPage({
             ))}
           </dl>
 
-          {product.includes && product.includes.length > 0 ? (
+          {product.includes.length > 0 ? (
             <div className="mt-14">
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                 Incluye
@@ -205,14 +208,14 @@ export default async function ProductDetailPage({
             <div className="flex items-end justify-between gap-6">
               <div>
                 <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                  También de {category.label.toLowerCase()}
+                  También de {product.category.name.toLowerCase()}
                 </p>
                 <h2 className="mt-3 font-serif text-2xl tracking-tight md:text-3xl">
                   Productos relacionados
                 </h2>
               </div>
               <Link
-                href={`/productos?cat=${product.category}`}
+                href={`/productos?cat=${product.category.slug}`}
                 className="text-sm font-medium text-foreground underline underline-offset-4 decoration-foreground/30 hover:decoration-foreground"
               >
                 Ver toda la categoría →

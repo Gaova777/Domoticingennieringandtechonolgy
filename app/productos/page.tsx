@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { CATALOG, CATEGORY_META } from '@/lib/mock/catalog';
-import { applyFilters, parseFilters, hasActiveFilters } from '@/lib/filters';
+import { CATEGORY_META } from '@/lib/mock/catalog';
+import { parseFilters, hasActiveFilters } from '@/lib/filters';
+import { getProducts, getCatalogStats } from '@/lib/supabase/queries';
 import { FilterPanel } from '@/components/catalog/filter-panel';
 import { SortSelector } from '@/components/catalog/sort-selector';
 import { SearchInput } from '@/components/catalog/search-input';
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
     'Catálogo de domótica, cámaras, cerraduras y accesorios. Envío a toda Colombia con soporte local en Pereira.',
 };
 
+export const revalidate = 60;
+
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 type Props = {
@@ -21,9 +24,12 @@ type Props = {
 export default async function ProductsPage({ searchParams }: Props) {
   const params = await searchParams;
   const filters = parseFilters(params);
-  const products = applyFilters(filters);
-  const total = CATALOG.length;
+  const [products, stats] = await Promise.all([
+    getProducts(filters),
+    getCatalogStats(),
+  ]);
   const shown = products.length;
+  const total = stats.total;
 
   const categoryLabel = filters.category
     ? CATEGORY_META[filters.category].label

@@ -5,10 +5,10 @@ import { Minus, Plus, ShoppingBag, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/lib/stores/cart';
-import type { Product } from '@/lib/mock/catalog';
+import type { DBProduct } from '@/lib/supabase/queries';
 import { formatCop, waLink } from '@/lib/constants';
 
-export function AddToCart({ product }: { product: Product }) {
+export function AddToCart({ product }: { product: DBProduct }) {
   const addItem = useCart((s) => s.addItem);
   const [qty, setQty] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
@@ -23,7 +23,7 @@ export function AddToCart({ product }: { product: Product }) {
         slug: product.slug,
         name: product.name,
         price: product.price,
-        image: '',
+        image: product.imageUrl ?? '',
         maxStock: product.stock > 0 ? product.stock : undefined,
       },
       qty,

@@ -1,9 +1,4 @@
-import {
-  CATALOG,
-  type Brand,
-  type Category,
-  type Product,
-} from '@/lib/mock/catalog';
+import type { Brand, Category } from '@/lib/mock/catalog';
 
 export type SortKey = 'relevance' | 'price-asc' | 'price-desc' | 'newest' | 'rating';
 
@@ -53,58 +48,6 @@ export function parseFilters(
     query,
     sort,
   };
-}
-
-export function applyFilters(filters: Filters): Product[] {
-  let out = CATALOG;
-
-  if (filters.category) {
-    out = out.filter((p) => p.category === filters.category);
-  }
-  if (filters.brands.length > 0) {
-    out = out.filter((p) => filters.brands.includes(p.brand));
-  }
-  if (filters.minPrice !== undefined) {
-    out = out.filter((p) => p.price >= filters.minPrice!);
-  }
-  if (filters.maxPrice !== undefined) {
-    out = out.filter((p) => p.price <= filters.maxPrice!);
-  }
-  if (filters.inStockOnly) {
-    out = out.filter((p) => p.stock > 0);
-  }
-  if (filters.query) {
-    const q = filters.query.toLowerCase();
-    out = out.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.sku.toLowerCase().includes(q) ||
-        p.shortSpec.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q),
-    );
-  }
-
-  switch (filters.sort) {
-    case 'price-asc':
-      out = [...out].sort((a, b) => a.price - b.price);
-      break;
-    case 'price-desc':
-      out = [...out].sort((a, b) => b.price - a.price);
-      break;
-    case 'newest':
-      out = [...out].sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      );
-      break;
-    case 'rating':
-      out = [...out].sort((a, b) => b.rating - a.rating);
-      break;
-    case 'relevance':
-    default:
-      out = [...out].sort((a, b) => b.reviews - a.reviews);
-  }
-
-  return out;
 }
 
 export function hasActiveFilters(f: Filters): boolean {
