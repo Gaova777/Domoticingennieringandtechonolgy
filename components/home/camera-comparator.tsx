@@ -45,14 +45,12 @@ export function CameraComparator() {
             description="Comparamos modelos populares con las specs que importan. Sin jerga innecesaria."
           />
           <Button
-            asChild
             variant="outline"
+            render={<Link href="/productos?comparar=camaras" />}
             className="border-white/15 bg-white/5 hover:border-brand-magenta/40 hover:text-brand-magenta"
           >
-            <Link href="/productos?comparar=camaras">
-              Comparador completo
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+            Comparador completo
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
 

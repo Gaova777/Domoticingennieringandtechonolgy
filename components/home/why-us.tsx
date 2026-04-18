@@ -9,10 +9,8 @@ export function WhyUs() {
       <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-24">
         <SectionHeading
           eyebrow="¿Por qué nosotros?"
-          title="Ingeniería local que responde"
+          title="Ingeniería local que responde."
           description="No somos una tienda sin cara. Somos un equipo en Pereira que te acompaña antes, durante y después de la instalación."
-          align="center"
-          className="mx-auto"
         />
         <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {WHY_US.map((f) => {

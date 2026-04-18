@@ -52,17 +52,17 @@ export function MapCta() {
 
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Button
-              asChild
               size="lg"
+              render={
+                <a
+                  href={waLink('Hola, quisiera agendar una visita técnica.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
               className="h-11 rounded-full bg-foreground px-6 text-sm font-medium text-background hover:bg-foreground/90"
             >
-              <a
-                href={waLink('Hola, quisiera agendar una visita técnica.')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Agendar por WhatsApp
-              </a>
+              Agendar por WhatsApp
             </Button>
             <Link
               href="/contacto"

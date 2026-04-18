@@ -26,11 +26,11 @@ export function Hero() {
 
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
               <Button
-                asChild
                 size="lg"
+                render={<Link href="/productos" />}
                 className="h-11 rounded-full bg-foreground px-6 text-sm font-medium text-background hover:bg-foreground/90"
               >
-                <Link href="/productos">Explorar productos</Link>
+                Explorar productos
               </Button>
               <Link
                 href="/cotizar"

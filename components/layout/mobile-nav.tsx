@@ -21,22 +21,24 @@ export function MobileNav() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Abrir menú"
-          className="md:hidden"
-        >
-          <Menu strokeWidth={1.5} className="h-5 w-5" />
-        </Button>
+      <SheetTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Abrir menú"
+            className="md:hidden"
+          />
+        }
+      >
+        <Menu strokeWidth={1.5} className="h-5 w-5" />
       </SheetTrigger>
       <SheetContent
         side="right"
         className="w-[88%] max-w-sm border-l border-border bg-background"
       >
         <SheetHeader className="border-b border-border pb-6">
-          <SheetTitle asChild>
+          <SheetTitle className="flex">
             <Logo asLink={false} />
           </SheetTitle>
         </SheetHeader>
@@ -44,11 +46,11 @@ export function MobileNav() {
           <NavLinks orientation="vertical" onNavigate={close} />
           <div className="border-t border-border pt-6">
             <Button
-              asChild
+              render={<Link href="/cotizar" />}
               className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
               onClick={close}
             >
-              <Link href="/cotizar">Cotizar proyecto</Link>
+              Cotizar proyecto
             </Button>
             <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
               Contacto

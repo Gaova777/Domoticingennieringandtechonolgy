@@ -15,11 +15,11 @@ export function Navbar() {
         </div>
         <div className="ml-auto flex items-center gap-3 md:ml-6">
           <Button
-            asChild
             size="sm"
+            render={<Link href="/cotizar" />}
             className="hidden h-9 rounded-full bg-foreground px-4 text-xs font-medium text-background hover:bg-foreground/90 md:inline-flex"
           >
-            <Link href="/cotizar">Cotizar</Link>
+            Cotizar
           </Button>
           <CartButton />
           <MobileNav />
