@@ -1,91 +1,83 @@
 'use client';
 
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useCallback, useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { BRAND_META, CATEGORY_META, type Brand } from '@/lib/mock/catalog';
+import {
+  BRAND_META,
+  CATEGORY_META,
+  CATEGORY_ACCENT,
+  ACCENT_DOT_CLASS,
+  type Brand,
+  type Category,
+} from '@/lib/mock/catalog';
 import { cn } from '@/lib/utils';
+import { useCatalogFilters } from './catalog-context';
 
-const CATEGORIES = Object.keys(CATEGORY_META) as Array<keyof typeof CATEGORY_META>;
+const CATEGORIES = Object.keys(CATEGORY_META) as Category[];
 const BRANDS = Object.keys(BRAND_META) as Brand[];
 
 const LABEL =
   'font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground';
 
 export function FilterPanel() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const search = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const { filters, setFilters, reset } = useCatalogFilters();
 
-  const [minPrice, setMinPrice] = useState(search.get('min') ?? '');
-  const [maxPrice, setMaxPrice] = useState(search.get('max') ?? '');
-
-  useEffect(() => {
-    setMinPrice(search.get('min') ?? '');
-    setMaxPrice(search.get('max') ?? '');
-  }, [search]);
-
-  const updateParam = useCallback(
-    (mutate: (params: URLSearchParams) => void) => {
-      const params = new URLSearchParams(search);
-      mutate(params);
-      startTransition(() => {
-        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-      });
-    },
-    [search, router, pathname],
+  const [minPrice, setMinPrice] = useState(
+    filters.minPrice !== undefined ? String(filters.minPrice) : '',
+  );
+  const [maxPrice, setMaxPrice] = useState(
+    filters.maxPrice !== undefined ? String(filters.maxPrice) : '',
   );
 
-  const setSingle = (key: string, value: string | null) =>
-    updateParam((p) => {
-      if (value === null || value === '') p.delete(key);
-      else p.set(key, value);
-    });
+  useEffect(() => {
+    setMinPrice(filters.minPrice !== undefined ? String(filters.minPrice) : '');
+    setMaxPrice(filters.maxPrice !== undefined ? String(filters.maxPrice) : '');
+  }, [filters.minPrice, filters.maxPrice]);
 
-  const toggleBrand = (brand: Brand) =>
-    updateParam((p) => {
-      const current = (p.get('brand') ?? '').split(',').filter(Boolean);
-      const next = current.includes(brand)
-        ? current.filter((b) => b !== brand)
-        : [...current, brand];
-      if (next.length === 0) p.delete('brand');
-      else p.set('brand', next.join(','));
-    });
+  const toggleCategory = (cat: Category) => {
+    setFilters((prev) => ({
+      ...prev,
+      category: prev.category === cat ? undefined : cat,
+    }));
+  };
 
-  const activeCategory = search.get('cat');
-  const activeBrands = (search.get('brand') ?? '').split(',').filter(Boolean);
-  const inStockOnly = search.get('stock') === '1';
-
-  const applyPrice = () =>
-    updateParam((p) => {
-      if (minPrice) p.set('min', minPrice);
-      else p.delete('min');
-      if (maxPrice) p.set('max', maxPrice);
-      else p.delete('max');
+  const toggleBrand = (brand: Brand) => {
+    setFilters((prev) => {
+      const has = prev.brands.includes(brand);
+      return {
+        ...prev,
+        brands: has ? prev.brands.filter((b) => b !== brand) : [...prev.brands, brand],
+      };
     });
+  };
 
-  const clearAll = () =>
-    startTransition(() => {
-      router.replace(pathname, { scroll: false });
-    });
+  const applyPrice = () => {
+    const min = minPrice ? Number(minPrice) : undefined;
+    const max = maxPrice ? Number(maxPrice) : undefined;
+    setFilters((prev) => ({
+      ...prev,
+      minPrice: Number.isFinite(min) ? min : undefined,
+      maxPrice: Number.isFinite(max) ? max : undefined,
+    }));
+  };
+
+  const toggleStock = (v: boolean) => {
+    setFilters((prev) => ({ ...prev, inStockOnly: v }));
+  };
 
   return (
-    <aside
-      className={cn(
-        'space-y-10',
-        isPending && 'opacity-70 transition-opacity',
-      )}
-    >
+    <aside className="space-y-10">
       <div>
         <div className="flex items-center justify-between">
           <h2 className={LABEL}>Categoría</h2>
-          {activeCategory ? (
+          {filters.category ? (
             <button
               type="button"
-              onClick={() => setSingle('cat', null)}
+              onClick={() =>
+                setFilters((prev) => ({ ...prev, category: undefined }))
+              }
               className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
             >
               Limpiar
@@ -94,12 +86,13 @@ export function FilterPanel() {
         </div>
         <ul className="mt-4 space-y-1">
           {CATEGORIES.map((c) => {
-            const active = activeCategory === c;
+            const active = filters.category === c;
+            const dot = ACCENT_DOT_CLASS[CATEGORY_ACCENT[c]];
             return (
               <li key={c}>
                 <button
                   type="button"
-                  onClick={() => setSingle('cat', active ? null : c)}
+                  onClick={() => toggleCategory(c)}
                   className={cn(
                     'flex w-full items-center justify-between py-1.5 text-sm transition-colors',
                     active
@@ -109,9 +102,10 @@ export function FilterPanel() {
                 >
                   <span className="flex items-center gap-2">
                     <span
+                      aria-hidden
                       className={cn(
-                        'h-1 w-1 rounded-full transition-colors',
-                        active ? 'bg-brand-cyan' : 'bg-muted-foreground/40',
+                        'h-1.5 w-1.5 rounded-full transition-opacity',
+                        active ? dot : 'bg-muted-foreground/40',
                       )}
                     />
                     {CATEGORY_META[c].label}
@@ -126,10 +120,10 @@ export function FilterPanel() {
       <div>
         <div className="flex items-center justify-between">
           <h2 className={LABEL}>Marca</h2>
-          {activeBrands.length > 0 ? (
+          {filters.brands.length > 0 ? (
             <button
               type="button"
-              onClick={() => setSingle('brand', null)}
+              onClick={() => setFilters((prev) => ({ ...prev, brands: [] }))}
               className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
             >
               Limpiar
@@ -138,7 +132,7 @@ export function FilterPanel() {
         </div>
         <ul className="mt-4 flex flex-wrap gap-1.5">
           {BRANDS.map((b) => {
-            const active = activeBrands.includes(b);
+            const active = filters.brands.includes(b);
             return (
               <li key={b}>
                 <button
@@ -194,8 +188,8 @@ export function FilterPanel() {
         <h2 className={LABEL}>Disponibilidad</h2>
         <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <Checkbox
-            checked={inStockOnly}
-            onCheckedChange={(v) => setSingle('stock', v ? '1' : null)}
+            checked={filters.inStockOnly}
+            onCheckedChange={(v) => toggleStock(v === true)}
             className="h-4 w-4 rounded-sm border-border data-[state=checked]:border-foreground data-[state=checked]:bg-foreground"
           />
           Solo en stock
@@ -204,7 +198,7 @@ export function FilterPanel() {
 
       <button
         type="button"
-        onClick={clearAll}
+        onClick={reset}
         className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground underline underline-offset-4 decoration-muted-foreground/40 transition hover:text-foreground hover:decoration-foreground"
       >
         Limpiar todos los filtros

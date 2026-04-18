@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
@@ -9,17 +8,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SORT_LABELS, type SortKey } from '@/lib/filters';
+import { useCatalogFilters } from './catalog-context';
 
-export function SortSelector({ active }: { active: SortKey }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const search = useSearchParams();
+export function SortSelector() {
+  const { filters, setFilters } = useCatalogFilters();
+  const active = filters.sort;
 
   const setSort = (key: SortKey) => {
-    const params = new URLSearchParams(search);
-    if (key === 'relevance') params.delete('sort');
-    else params.set('sort', key);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    setFilters((prev) => ({ ...prev, sort: key }));
   };
 
   return (

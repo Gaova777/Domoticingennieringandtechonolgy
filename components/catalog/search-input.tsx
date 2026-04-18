@@ -1,34 +1,32 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { useCatalogFilters } from './catalog-context';
 
 export function SearchInput() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const search = useSearchParams();
-  const [value, setValue] = useState(search.get('q') ?? '');
-  const [, startTransition] = useTransition();
+  const { filters, setFilters } = useCatalogFilters();
+  const [value, setValue] = useState(filters.query ?? '');
 
-  useEffect(() => {
-    setValue(search.get('q') ?? '');
-  }, [search]);
-
+  // Debounced sync → filters
   useEffect(() => {
     const id = setTimeout(() => {
-      const current = search.get('q') ?? '';
-      if (value === current) return;
-      const params = new URLSearchParams(search);
-      if (value) params.set('q', value);
-      else params.delete('q');
-      startTransition(() => {
-        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-      });
-    }, 300);
+      setFilters((prev) =>
+        prev.query === value ? prev : { ...prev, query: value || undefined },
+      );
+    }, 200);
     return () => clearTimeout(id);
-  }, [value, pathname, router, search]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  // If filters changed externally (reset), mirror back into local input.
+  useEffect(() => {
+    if ((filters.query ?? '') !== value) {
+      setValue(filters.query ?? '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters.query]);
 
   return (
     <div className="relative w-full max-w-sm">
