@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { CATEGORY_META } from '@/lib/mock/catalog';
-import { parseFilters, hasActiveFilters } from '@/lib/filters';
-import { getProducts, getCatalogStats } from '@/lib/supabase/queries';
+import { parseFilters } from '@/lib/filters';
+import { getCatalogStats } from '@/lib/supabase/queries';
 import { FilterPanel } from '@/components/catalog/filter-panel';
 import { SortSelector } from '@/components/catalog/sort-selector';
 import { SearchInput } from '@/components/catalog/search-input';
-import { ProductCard } from '@/components/shared/product-card';
+import {
+  ProductGrid,
+  ProductGridSkeleton,
+} from '@/components/catalog/product-grid';
 
 export const metadata: Metadata = {
   title: 'Catálogo',
@@ -24,12 +28,7 @@ type Props = {
 export default async function ProductsPage({ searchParams }: Props) {
   const params = await searchParams;
   const filters = parseFilters(params);
-  const [products, stats] = await Promise.all([
-    getProducts(filters),
-    getCatalogStats(),
-  ]);
-  const shown = products.length;
-  const total = stats.total;
+  const stats = await getCatalogStats();
 
   const categoryLabel = filters.category
     ? CATEGORY_META[filters.category].label
@@ -55,8 +54,7 @@ export default async function ProductsPage({ searchParams }: Props) {
             <SearchInput />
             <div className="flex items-center gap-8">
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground tabular-nums">
-                {String(shown).padStart(2, '0')} / {String(total).padStart(2, '0')}{' '}
-                productos
+                {String(stats.total).padStart(2, '0')} productos
               </p>
               <SortSelector active={filters.sort} />
             </div>
@@ -69,43 +67,15 @@ export default async function ProductsPage({ searchParams }: Props) {
           <FilterPanel />
 
           <div>
-            {shown === 0 ? (
-              <EmptyState
-                resetHref={hasActiveFilters(filters) ? '/productos' : undefined}
-              />
-            ) : (
-              <ul className="grid gap-x-6 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
-                {products.map((p, i) => (
-                  <li key={p.id}>
-                    <ProductCard product={p} index={i + 1} />
-                  </li>
-                ))}
-              </ul>
-            )}
+            <Suspense
+              key={JSON.stringify(filters)}
+              fallback={<ProductGridSkeleton />}
+            >
+              <ProductGrid filters={filters} />
+            </Suspense>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function EmptyState({ resetHref }: { resetHref?: string }) {
-  return (
-    <div className="flex min-h-[40vh] flex-col items-start justify-center gap-4">
-      <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-        Sin resultados
-      </p>
-      <h2 className="font-serif text-3xl leading-tight tracking-tight md:text-4xl">
-        No encontramos productos que cumplan estos filtros.
-      </h2>
-      {resetHref ? (
-        <a
-          href={resetHref}
-          className="text-sm font-medium text-foreground underline underline-offset-4 decoration-foreground/30 hover:decoration-foreground"
-        >
-          Limpiar filtros →
-        </a>
-      ) : null}
     </div>
   );
 }
