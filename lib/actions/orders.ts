@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { supabasePublic } from '@/lib/supabase/public';
 import { computeTotals } from '@/lib/cart';
+import type { Json } from '@/types/database';
 
 const customerSchema = z.object({
   name: z.string().min(2).max(100),
@@ -85,13 +86,20 @@ export async function createOrder(raw: unknown): Promise<CreateOrderResult> {
     return { ok: false, error: 'No pudimos validar los productos' };
   }
 
-  const snapshots: Array<{
+  type SnapshotInfo = {
+    sku: string;
+    name: string;
+    slug: string;
+    unit_price: number;
+  };
+  type Snapshot = {
     product_id: string;
-    product_snapshot: Record<string, unknown>;
+    product_snapshot: SnapshotInfo;
     quantity: number;
     unit_price: number;
     subtotal: number;
-  }> = [];
+  };
+  const snapshots: Snapshot[] = [];
 
   for (const cartItem of data.items) {
     const product = products.find((p) => p.id === cartItem.id);
@@ -178,9 +186,14 @@ export async function createOrder(raw: unknown): Promise<CreateOrderResult> {
     return { ok: false, error: 'No pudimos crear la orden' };
   }
 
+  const itemsPayload = snapshots.map((s) => ({
+    ...s,
+    order_id: order.id,
+    product_snapshot: s.product_snapshot as unknown as Json,
+  }));
   const { error: itemsErr } = await admin
     .from('order_items')
-    .insert(snapshots.map((s) => ({ ...s, order_id: order.id })));
+    .insert(itemsPayload);
 
   if (itemsErr) {
     console.error('[createOrder] order_items insert', itemsErr);
@@ -188,18 +201,24 @@ export async function createOrder(raw: unknown): Promise<CreateOrderResult> {
 
   // Decrement stock for each item. Best-effort (no row-level lock available).
   await Promise.all(
-    snapshots.map((s) =>
-      admin.rpc('decrement_stock' as never, {
-        product_id: s.product_id,
-        amount: s.quantity,
-      } as never).catch(() => null),
-    ),
+    snapshots.map(async (s) => {
+      try {
+        await admin.rpc('decrement_stock', {
+          product_id: s.product_id,
+          amount: s.quantity,
+        });
+      } catch (err) {
+        console.error('[createOrder] decrement_stock', err);
+      }
+    }),
   );
 
   if (promoId) {
-    await admin
-      .rpc('increment_promo_usage' as never, { promo_id: promoId } as never)
-      .catch(() => null);
+    try {
+      await admin.rpc('increment_promo_usage', { promo_id: promoId });
+    } catch (err) {
+      console.error('[createOrder] increment_promo_usage', err);
+    }
   }
 
   const summary = snapshots

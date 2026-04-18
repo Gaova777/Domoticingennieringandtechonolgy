@@ -198,6 +198,7 @@ export type Database = {
           includes: string[]
           is_active: boolean
           is_featured: boolean
+          is_star: boolean
           name: string
           price: number
           protocol: string | null
@@ -224,6 +225,7 @@ export type Database = {
           includes?: string[]
           is_active?: boolean
           is_featured?: boolean
+          is_star?: boolean
           name: string
           price: number
           protocol?: string | null
@@ -250,6 +252,7 @@ export type Database = {
           includes?: string[]
           is_active?: boolean
           is_featured?: boolean
+          is_star?: boolean
           name?: string
           price?: number
           protocol?: string | null
@@ -307,6 +310,54 @@ export type Database = {
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string
+        }
+        Relationships: []
+      }
+      promotions: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          min_purchase: number
+          type: Database["public"]["Enums"]["promotion_type"]
+          updated_at: string
+          used_count: number
+          valid_from: string
+          valid_to: string | null
+          value: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          min_purchase?: number
+          type: Database["public"]["Enums"]["promotion_type"]
+          updated_at?: string
+          used_count?: number
+          valid_from?: string
+          valid_to?: string | null
+          value: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          min_purchase?: number
+          type?: Database["public"]["Enums"]["promotion_type"]
+          updated_at?: string
+          used_count?: number
+          valid_from?: string
+          valid_to?: string | null
+          value?: number
         }
         Relationships: []
       }
@@ -464,6 +515,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      decrement_stock: {
+        Args: { amount: number; product_id: string }
+        Returns: undefined
+      }
+      increment_promo_usage: { Args: { promo_id: string }; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
@@ -475,6 +531,7 @@ export type Database = {
         | "delivered"
         | "cancelled"
         | "refunded"
+      promotion_type: "percent" | "fixed_cop"
       quote_status:
         | "pending"
         | "contacted"
@@ -620,6 +677,7 @@ export const Constants = {
         "cancelled",
         "refunded",
       ],
+      promotion_type: ["percent", "fixed_cop"],
       quote_status: [
         "pending",
         "contacted",
