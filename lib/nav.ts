@@ -7,7 +7,7 @@ export type NavItem = {
 export const PRIMARY_NAV: NavItem[] = [
   { label: 'Productos', href: '/productos', description: 'Catálogo completo' },
   { label: 'Servicios', href: '/servicios', description: 'Instalación y asesoría' },
-  { label: 'Configurador', href: '/configurador', description: 'Armá tu proyecto' },
+  { label: 'Configurador', href: '/configurador', description: 'Arma tu proyecto' },
   { label: 'Aprendé', href: '/blog', description: 'Guías y comparativas' },
   { label: 'Contacto', href: '/contacto', description: 'Hablemos' },
 ];

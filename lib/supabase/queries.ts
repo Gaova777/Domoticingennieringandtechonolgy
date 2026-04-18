@@ -227,3 +227,116 @@ export async function getCatalogStats(): Promise<{ total: number }> {
   if (error) return { total: 0 };
   return { total: count ?? 0 };
 }
+
+// ---------------------------------------------------------------------------
+// Services
+// ---------------------------------------------------------------------------
+
+export type DBService = {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  longDescription: string | null;
+  icon: string | null;
+  accent: 'cyan' | 'magenta' | 'yellow' | 'green' | null;
+  imageUrl: string | null;
+  sortOrder: number;
+};
+
+function mapService(row: {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  long_description: string | null;
+  icon: string | null;
+  accent: string | null;
+  image_url: string | null;
+  sort_order: number;
+}): DBService {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline,
+    description: row.description,
+    longDescription: row.long_description,
+    icon: row.icon,
+    accent: (row.accent as DBService['accent']) ?? null,
+    imageUrl: row.image_url,
+    sortOrder: row.sort_order,
+  };
+}
+
+export async function getServices(): Promise<DBService[]> {
+  const sb = supabasePublic();
+  const { data, error } = await sb
+    .from('services')
+    .select(
+      'id, slug, name, tagline, description, long_description, icon, accent, image_url, sort_order',
+    )
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+  if (error) {
+    console.error('[queries.getServices]', error);
+    return [];
+  }
+  return (data ?? []).map(mapService);
+}
+
+export async function getServiceBySlug(slug: string): Promise<DBService | null> {
+  const sb = supabasePublic();
+  const { data, error } = await sb
+    .from('services')
+    .select(
+      'id, slug, name, tagline, description, long_description, icon, accent, image_url, sort_order',
+    )
+    .eq('slug', slug)
+    .eq('is_active', true)
+    .maybeSingle();
+  if (error) {
+    console.error('[queries.getServiceBySlug]', error);
+    throw error;
+  }
+  if (!data) return null;
+  return mapService(data);
+}
+
+export async function getAllServiceSlugs(): Promise<string[]> {
+  const sb = supabasePublic();
+  const { data, error } = await sb
+    .from('services')
+    .select('slug')
+    .eq('is_active', true);
+  if (error) return [];
+  return (data ?? []).map((r) => r.slug);
+}
+
+// ---------------------------------------------------------------------------
+// Testimonials
+// ---------------------------------------------------------------------------
+
+export type DBTestimonial = {
+  id: string;
+  name: string;
+  role: string | null;
+  city: string | null;
+  message: string;
+  rating: number | null;
+  service: string | null;
+};
+
+export async function getTestimonials(limit = 3): Promise<DBTestimonial[]> {
+  const sb = supabasePublic();
+  const { data, error } = await sb
+    .from('testimonials')
+    .select('id, name, role, city, message, rating, service')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true })
+    .limit(limit);
+  if (error) return [];
+  return data ?? [];
+}

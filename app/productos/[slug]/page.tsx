@@ -103,7 +103,11 @@ export default async function ProductDetailPage({
 
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-12 md:grid-cols-12 md:gap-16 md:py-20">
         <div className="md:col-span-7">
-          <ProductGallery sku={product.sku} name={product.name} />
+          <ProductGallery
+            sku={product.sku}
+            name={product.name}
+            category={product.category.slug}
+          />
         </div>
 
         <div className="md:col-span-5">

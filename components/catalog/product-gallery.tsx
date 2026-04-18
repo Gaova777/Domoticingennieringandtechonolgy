@@ -7,17 +7,19 @@ import { cn } from '@/lib/utils';
 type Props = {
   sku: string;
   name: string;
+  category?: string;
 };
 
 const ANGLES = ['FRONT', 'SIDE', 'BACK', 'DETAIL'];
 
-export function ProductGallery({ sku }: Props) {
+export function ProductGallery({ sku, category }: Props) {
   const [active, setActive] = useState(0);
 
   return (
     <div className="space-y-4">
       <ProductPlaceholder
         sku={`${sku} · ${ANGLES[active]}`}
+        category={category}
         size="lg"
         className="aspect-square md:aspect-[4/5]"
       />
@@ -36,6 +38,7 @@ export function ProductGallery({ sku }: Props) {
             >
               <ProductPlaceholder
                 sku={label}
+                category={category}
                 size="sm"
                 className="aspect-square border-0"
               />

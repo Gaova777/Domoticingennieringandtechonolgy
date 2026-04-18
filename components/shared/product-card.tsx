@@ -31,6 +31,7 @@ export function ProductCard({ product, index }: Props) {
         <ProductPlaceholder
           sku={product.sku}
           index={index}
+          category={product.category.slug}
           size="md"
           className="aspect-[4/5]"
         />

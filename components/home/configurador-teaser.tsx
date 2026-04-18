@@ -14,7 +14,7 @@ export function ConfiguradorTeaser() {
             <em className="italic">a la medida.</em>
           </h2>
           <p className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            Respondé tres preguntas sobre tu espacio y te entregamos una propuesta
+            Responde tres preguntas sobre tu espacio y te entregamos una propuesta
             con equipos, instalación y presupuesto. Sin compromiso.
           </p>
 

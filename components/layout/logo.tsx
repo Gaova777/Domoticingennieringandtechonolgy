@@ -1,56 +1,39 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 type LogoProps = {
   className?: string;
-  showWordmark?: boolean;
+  size?: 'sm' | 'md' | 'lg';
   asLink?: boolean;
 };
 
-function LogoMark({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 32 32"
-      aria-hidden="true"
-      className={cn('h-6 w-6', className)}
-      fill="none"
-    >
-      <circle
-        cx="16"
-        cy="16"
-        r="14.5"
-        stroke="currentColor"
-        strokeOpacity="0.9"
-        strokeWidth="1"
-      />
-      <circle cx="16" cy="16" r="3" fill="currentColor" />
-      <path
-        d="M7 16h3M22 16h3M16 7v3M16 22v3"
-        stroke="currentColor"
-        strokeOpacity="0.7"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+const DIMENSIONS: Record<NonNullable<LogoProps['size']>, { w: number; h: number }> = {
+  sm: { w: 110, h: 44 },
+  md: { w: 140, h: 56 },
+  lg: { w: 200, h: 80 },
+};
 
-export function Logo({ className, showWordmark = true, asLink = true }: LogoProps) {
+export function Logo({ className, size = 'sm', asLink = true }: LogoProps) {
+  const { w, h } = DIMENSIONS[size];
+
   const content = (
-    <span className={cn('flex items-center gap-2.5 text-foreground', className)}>
-      <LogoMark />
-      {showWordmark ? (
-        <span className="font-serif text-base leading-none tracking-tight">
-          Domotic<span className="italic">{' e '}</span>Ingeniería
-        </span>
-      ) : null}
-    </span>
+    <Image
+      src="/logo.png"
+      alt="Domotic E Ingeniería — Tecnología a tu alcance"
+      width={w}
+      height={h}
+      priority={size !== 'sm'}
+      className={cn('h-auto w-auto select-none', className)}
+      style={{ maxHeight: h }}
+    />
   );
 
   if (!asLink) return content;
   return (
     <Link
       href="/"
+      aria-label="Inicio — Domotic E Ingeniería"
       className="inline-flex rounded-sm transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
     >
       {content}

@@ -53,7 +53,7 @@ export const MOCK_SERVICES: ServiceTeaser[] = [
     id: 'puertas',
     slug: 'puertas',
     name: 'Puertas automáticas',
-    tagline: 'Entrá sin bajarte',
+    tagline: 'Entra sin bajarte',
     description:
       'Corredizas, batientes, motores para garaje y talanqueras para conjuntos.',
     icon: DoorClosed,

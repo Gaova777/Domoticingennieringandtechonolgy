@@ -31,7 +31,7 @@ insert into public.services (slug, name, tagline, description, icon, accent, sor
   ('domotica',    'Domótica residencial',    'Tu casa te escucha',        'Iluminación, clima y escenas automatizadas con control por voz, app o sensores.',                  'Home',       'cyan',    1),
   ('camaras',     'Cámaras y CCTV',          'Vigilancia 24/7',           'Cámaras IP/analógicas, NVR, visión nocturna y acceso remoto desde el celular.',                    'Camera',     'magenta', 2),
   ('cerraduras',  'Cerraduras inteligentes', 'Llaves que no se pierden',  'Huella, clave, tarjeta RFID y app. Adiós a duplicar llaves cada semana.',                          'KeyRound',   'yellow',  3),
-  ('puertas',     'Puertas automáticas',     'Entrá sin bajarte',         'Corredizas, batientes, motores para garaje y talanqueras para conjuntos.',                         'DoorClosed', 'green',   4),
+  ('puertas',     'Puertas automáticas',     'Entra sin bajarte',         'Corredizas, batientes, motores para garaje y talanqueras para conjuntos.',                         'DoorClosed', 'green',   4),
   ('iluminacion', 'Iluminación inteligente', 'Escenas a tu medida',       'Bombillos, cintas LED, dimmers con color y escenas programadas.',                                  'Lightbulb',  'cyan',    5),
   ('cableado',    'Cableado y redes',        'La base de todo',           'Cableado estructurado, certificación, redes WiFi profesionales y switches PoE.',                   'Cable',      'magenta', 6)
 on conflict (slug) do nothing;

@@ -11,7 +11,7 @@ export function MapCta() {
       <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 md:grid-cols-12 md:gap-10 md:py-36">
         <div className="md:col-span-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            Visitanos
+            Visítanos
           </p>
           <h2 className="mt-4 text-balance font-serif text-3xl leading-tight tracking-tight md:text-4xl lg:text-5xl">
             Un equipo local,{' '}
@@ -19,7 +19,7 @@ export function MapCta() {
           </h2>
           <p className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
             Visitas técnicas sin costo en {SITE.city} y su área metropolitana.
-            Agendá por WhatsApp o pasá por la oficina.
+            Agenda por WhatsApp o pasa por la oficina.
           </p>
 
           <dl className="mt-10 grid gap-5 text-sm">

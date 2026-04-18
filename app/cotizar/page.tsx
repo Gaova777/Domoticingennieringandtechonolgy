@@ -12,7 +12,7 @@ export default function QuotePage() {
     <PagePlaceholder
       eyebrow="Cotización"
       title="Solicitá tu cotización"
-      description="Contanos qué querés hacer y te enviamos una propuesta con productos, instalación y tiempos."
+      description="Cuéntanos qué necesitas y te enviamos una propuesta con productos, instalación y tiempos."
       phase="Fase 7 — formulario completo próximamente"
     />
   );
