@@ -134,3 +134,52 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .dot-grid {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.06) 1px,
+      transparent 0
+    );
+    background-size: 24px 24px;
+  }
+  .dot-grid-tight {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(6, 182, 212, 0.12) 1px,
+      transparent 0
+    );
+    background-size: 18px 18px;
+  }
+  .mask-radial-fade {
+    mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
+    -webkit-mask-image: radial-gradient(
+      ellipse at center,
+      black 35%,
+      transparent 75%
+    );
+  }
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #06b6d4 0%, #ec4899 50%, #facc15 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(12px, -12px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-drift {
+    animation: drift 12s ease-in-out infinite;
+  }
+}
