@@ -44,7 +44,7 @@ export function MobileNav() {
         </SheetHeader>
         <div className="flex flex-col gap-10 pt-8">
           <NavLinks orientation="vertical" onNavigate={close} />
-          <div className="border-t border-border pt-6">
+          <div className="space-y-3 border-t border-border pt-6">
             <Button
               render={<Link href="/cotizar" />}
               className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
@@ -52,6 +52,13 @@ export function MobileNav() {
             >
               Cotizar proyecto
             </Button>
+            <Link
+              href="/cuenta/login"
+              onClick={close}
+              className="flex w-full items-center justify-center rounded-full border border-border py-2 text-xs font-medium text-foreground transition hover:border-foreground/40"
+            >
+              Iniciar sesión
+            </Link>
             <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
               Contacto
             </p>

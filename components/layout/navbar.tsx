@@ -1,11 +1,20 @@
 import Link from 'next/link';
+import { User } from 'lucide-react';
 import { Logo } from './logo';
 import { NavLinks } from './nav-links';
 import { CartButton } from './cart-button';
 import { MobileNav } from './mobile-nav';
 import { Button } from '@/components/ui/button';
+import { getCurrentUser } from '@/lib/supabase/queries-auth';
 
-export function Navbar() {
+export async function Navbar() {
+  let user: Awaited<ReturnType<typeof getCurrentUser>> = null;
+  try {
+    user = await getCurrentUser();
+  } catch {
+    user = null;
+  }
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
       <div
@@ -18,13 +27,24 @@ export function Navbar() {
           <NavLinks />
         </div>
         <div className="ml-auto flex items-center gap-3 md:ml-6">
-          <Button
-            size="sm"
-            render={<Link href="/cotizar" />}
-            className="hidden h-9 rounded-full bg-foreground px-4 text-xs font-medium text-background hover:bg-foreground/90 md:inline-flex"
-          >
-            Cotizar
-          </Button>
+          {user ? (
+            <Link
+              href="/cuenta"
+              aria-label="Mi cuenta"
+              className="inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-xs font-medium text-foreground transition hover:border-foreground/40"
+            >
+              <User strokeWidth={1.5} className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Mi cuenta</span>
+            </Link>
+          ) : (
+            <Button
+              size="sm"
+              render={<Link href="/cuenta/login" />}
+              className="hidden h-9 rounded-full bg-foreground px-4 text-xs font-medium text-background hover:bg-foreground/90 md:inline-flex"
+            >
+              Iniciar sesión
+            </Button>
+          )}
           <CartButton />
           <MobileNav />
         </div>
